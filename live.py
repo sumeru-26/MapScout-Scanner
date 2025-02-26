@@ -16,9 +16,6 @@ if not cap.isOpened():
         print("Error: Failed to access camera with both backends.")
         exit()
 
-# Set resolution to something common that most cameras support
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
 # To save detected QR codes (avoid duplicates)
 last_codes = set()
@@ -98,8 +95,8 @@ while True:
                 
                 # Check if we've seen this JSON content before
                 if json_str not in processed_json_strings:
-                    # Add to existing data
-                    existing_data.append(json_obj)
+                    # Add to the beginning of existing data
+                    existing_data.insert(0, json_obj)
                     
                     # Mark as processed
                     processed_json_strings.add(json_str)
@@ -108,7 +105,7 @@ while True:
                     with open(json_file_path, 'w') as f:
                         json.dump(existing_data, f, indent=2)
                     
-                    print("Appended new JSON data to data.json")
+                    print("Appended new JSON data to top of data.json")
                 else:
                     print("Duplicate JSON data - not appending")
                     
